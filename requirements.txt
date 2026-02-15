@@ -1,0 +1,10 @@
+# Requirements for PDF Encryption System
+django>=4.2
+djangorestframework>=3.14
+django-cors-headers>=4.3
+pdf2image>=1.16
+Pillow>=10.0
+pycryptodome>=3.19
+numpy>=1.24
+python-dotenv>=1.0
+gunicorn>=21.2

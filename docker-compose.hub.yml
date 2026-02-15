@@ -1,0 +1,36 @@
+services:
+  backend:
+    image: dharanitharan03/aartha-ai-backend:latest
+    container_name: django_backend
+    restart: always
+    environment:
+      - SECRET_KEY=django-insecure-docker-setup
+      - DEBUG=True
+      - ALLOWED_HOSTS=*
+      - FRONTEND_URL=http://localhost
+      - POPPLER_PATH=
+    ports:
+      - "8000:8000"
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+      - db_data:/app/data
+    # Note: Ensure db.sqlite3 is stored in /app/data/db.sqlite3 for persistence
+    # You may need to update settings.py DATABASES 'NAME' to: BASE_DIR / 'data' / 'db.sqlite3'
+
+  frontend:
+    image: dharanitharan03/aartha-ai-frontend:latest
+    container_name: vite_frontend
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - static_volume:/usr/share/nginx/html/static:ro
+      - media_volume:/usr/share/nginx/html/media:ro
+    depends_on:
+      - backend
+
+volumes:
+  static_volume:
+  media_volume:
+  db_data:

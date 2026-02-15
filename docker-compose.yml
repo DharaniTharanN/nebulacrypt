@@ -1,0 +1,35 @@
+services:
+  backend:
+    build: .
+    container_name: django_backend
+    restart: always
+    environment:
+      - SECRET_KEY=django-insecure-docker-setup
+      - DEBUG=True
+      - ALLOWED_HOSTS=*
+      - FRONTEND_URL=http://localhost
+      - POPPLER_PATH=
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+      - ./db.sqlite3:/app/db.sqlite3
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: vite_frontend
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - static_volume:/usr/share/nginx/html/static:ro
+      - media_volume:/usr/share/nginx/html/media:ro
+    depends_on:
+      - backend
+
+volumes:
+  static_volume:
+  media_volume:
